@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0D0E"
+    android:padding="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PENGATURAN"
+            android:textColor="#E7EDEE"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true" />
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="Tutup"
+            app:tint="#7C8B8F" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MAC Address BMS"
+                android:textColor="#7C8B8F"
+                android:textSize="12sp"
+                android:letterSpacing="0.05" />
+
+            <EditText
+                android:id="@+id/macInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="A4:C1:38:05:02:5C"
+                android:textColor="#E7EDEE"
+                android:textColorHint="#4E5A5D"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:inputType="textCapCharacters"
+                android:backgroundTint="#232C2F"
+                android:layout_marginTop="4dp"
+                android:paddingVertical="12dp" />
+
+            <CheckBox
+                android:id="@+id/cbAlwaysOn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Layar Selalu Nyala (Always On)"
+                android:textColor="#E7EDEE"
+                android:textSize="15sp"
+                android:layout_marginTop="20dp"
+                android:buttonTint="#2FE6C9"
+                android:paddingVertical="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Raw Frame Terakhir"
+                android:textColor="#7C8B8F"
+                android:textSize="12sp"
+                android:layout_marginTop="24dp"
+                android:letterSpacing="0.05" />
+
+            <TextView
+                android:id="@+id/tvRawData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#12171A"
+                android:padding="12dp"
+                android:text="Belum ada data..."
+                android:textColor="#7BD88F"
+                android:fontFamily="monospace"
+                android:textSize="11sp"
+                android:layout_marginTop="8dp"
+                android:minLines="5" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="SIMPAN &amp; HUBUNGKAN"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#2FE6C9"
+        android:textColor="#0A0D0E"
+        android:textStyle="bold" />
+
+</LinearLayout>

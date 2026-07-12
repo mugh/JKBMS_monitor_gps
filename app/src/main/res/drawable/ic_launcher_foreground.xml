@@ -1,0 +1,28 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:scaleX="0.7" android:scaleY="0.7" android:translateX="16.2" android:translateY="16.2">
+        <!-- Battery Shape (Cyan) -->
+        <path
+            android:fillColor="#2FE6C9"
+            android:pathData="M70,36h-4v-4c0,-2.2 -1.8,-4 -4,-4H46c-2.2,0 -4,1.8 -4,4v4h-4c-4.4,0 -8,3.6 -8,8v40c0,4.4 3.6,8 8,8h32c4.4,0 8,-3.6 8,-8V44C78,39.6 74.4,36 70,36z"/>
+
+        <!-- Bridge Symbol (Dark) -->
+        <!-- Arch -->
+        <path
+            android:fillColor="#12171A"
+            android:pathData="M44,64c0,-5.5 4.5,-10 10,-10s10,4.5 10,10l4,0c0,-7.7 -6.3,-14 -14,-14s-14,6.3 -14,14l4,0z"/>
+        <!-- Connection Nodes -->
+        <path
+            android:fillColor="#12171A"
+            android:pathData="M40,64a4,4 0 1,0 8,0a4,4 0 1,0 -8,0z"/>
+        <path
+            android:fillColor="#12171A"
+            android:pathData="M60,64a4,4 0 1,0 8,0a4,4 0 1,0 -8,0z"/>
+        <path
+            android:fillColor="#12171A"
+            android:pathData="M50,64a4,4 0 1,0 8,0a4,4 0 1,0 -8,0z"/>
+    </group>
+</vector>
