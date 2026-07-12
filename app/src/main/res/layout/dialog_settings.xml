@@ -9,13 +9,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PENGATURAN"
+            android:text="@string/settings"
             android:textColor="#E7EDEE"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -28,7 +28,7 @@
             android:layout_alignParentEnd="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:contentDescription="Tutup"
+            android:contentDescription="@string/close"
             app:tint="#7C8B8F" />
     </RelativeLayout>
 
@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MAC Address BMS"
+                android:text="@string/bms_mac_address"
                 android:textColor="#7C8B8F"
                 android:textSize="12sp"
                 android:letterSpacing="0.05" />
@@ -68,7 +68,7 @@
                 android:id="@+id/cbAlwaysOn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Layar Selalu Nyala (Always On)"
+                android:text="@string/screen_always_on"
                 android:textColor="#E7EDEE"
                 android:textSize="15sp"
                 android:layout_marginTop="20dp"
@@ -78,7 +78,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Raw Frame Terakhir"
+                android:text="@string/last_raw_frame"
                 android:textColor="#7C8B8F"
                 android:textSize="12sp"
                 android:layout_marginTop="24dp"
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:background="#12171A"
                 android:padding="12dp"
-                android:text="Belum ada data..."
+                android:text="@string/no_data_yet"
                 android:textColor="#7BD88F"
                 android:fontFamily="monospace"
                 android:textSize="11sp"
@@ -103,7 +103,7 @@
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="SIMPAN &amp; HUBUNGKAN"
+        android:text="@string/save_connect"
         android:layout_marginTop="20dp"
         android:backgroundTint="#2FE6C9"
         android:textColor="#0A0D0E"

@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JKBMS GPS MONITOR</string>
+    <string name="settings">SETTINGS</string>
+    <string name="close">Close</string>
+    <string name="bms_mac_address">BMS MAC Address</string>
+    <string name="screen_always_on">Screen Always On</string>
+    <string name="last_raw_frame">Last Raw Frame</string>
+    <string name="no_data_yet">No data yet...</string>
+    <string name="save_connect">SAVE &amp; CONNECT</string>
+    <string name="success_check_downloads">Success! Check Downloads folder</string>
+    <string name="save_share_csv">Save/Share CSV</string>
+    <string name="invalid_mac_format">Invalid MAC format</string>
 </resources>

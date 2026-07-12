@@ -25,13 +25,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var webView: WebView
     private var bleConnector: BleConnector? = null
-    private var lastRawData: String = "Belum ada data..."
+    private var lastRawData: String = ""
 
     private val prefs by lazy { getSharedPreferences("sbms_bridge", MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        lastRawData = getString(R.string.no_data_yet)
 
         applyAlwaysOn(prefs.getBoolean("always_on", true))
 
@@ -63,22 +65,19 @@ class MainActivity : AppCompatActivity() {
                         val uri = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                             resolver.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
                         } else {
-                            // Fallback untuk versi lama atau biarkan download manager yang handle jika perlu
-                            // Namun untuk kemudahan di versi modern:
                             null
                         }
 
                         if (uri != null) {
                             resolver.openOutputStream(uri)?.use { it.write(content.toByteArray()) }
-                            Toast.makeText(this@MainActivity, "Berhasil! Cek folder Downloads", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@MainActivity, getString(R.string.success_check_downloads), Toast.LENGTH_LONG).show()
                         } else {
-                            // Jika gagal via MediaStore (versi lama), kita pakai Share Intent saja agar user bisa pilih simpan dimana
                             val intent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
                                 type = "text/csv"
                                 putExtra(android.content.Intent.EXTRA_SUBJECT, filename)
                                 putExtra(android.content.Intent.EXTRA_TEXT, content)
                             }
-                            startActivity(android.content.Intent.createChooser(intent, "Simpan/Bagikan CSV"))
+                            startActivity(android.content.Intent.createChooser(intent, getString(R.string.save_share_csv)))
                         }
                     } catch (e: Exception) {
                         Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -98,7 +97,6 @@ class MainActivity : AppCompatActivity() {
 
         checkLocationPermission()
 
-        // auto-connect on launch if we already have a saved MAC
         val savedMac = prefs.getString("bms_mac", null)
         if (savedMac != null && isValidMac(savedMac)) {
             checkBluetoothPermissionThenConnect(savedMac)
@@ -133,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         btnSave.setOnClickListener {
             val mac = macInput.text.toString().trim().uppercase()
             if (!isValidMac(mac)) {
-                Toast.makeText(this, "Format MAC gak valid", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.invalid_mac_format), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val alwaysOn = cbAlwaysOn.isChecked
@@ -179,8 +177,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // ============ BLE (nRF Connect-style: connect + subscribe, no login command) ============
-
     private fun checkBluetoothPermissionThenConnect(mac: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
@@ -213,8 +209,6 @@ class MainActivity : AppCompatActivity() {
         }
         bleConnector?.connect()
     }
-
-    // ============ misc ============
 
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)

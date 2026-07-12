@@ -22,8 +22,8 @@ The app subscribes to notifications on the `ffe1` characteristic. Since JKBMS ma
 1. **Open Official JK BMS App**: Ensure your phone is connected and the official app is actively displaying battery data.
 2. **Launch JKBMS GPS Monitor**: Grant the required Bluetooth and Location permissions.
 3. **Configure MAC Address**: Go to Settings (gear icon) and enter your BMS MAC Address.
-4. **Start Trip**: Tap "Mulai Trip" (Start Trip) to begin tracking distance and efficiency.
-5. **Save Data**: Once finished, tap "Selesai Trip" (Finish Trip) to save the record to your local history.
+4. **Start Trip**: Tap Start Trip to begin tracking distance and efficiency.
+5. **Save Data**: Once finished, tap Finish Trip to save the record to your local history.
 
 ## 📦 Tech Stack
 - **Kotlin**: Native BLE handling, GPS logic, and Android-WebView bridge.
