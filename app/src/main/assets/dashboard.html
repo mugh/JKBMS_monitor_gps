@@ -45,6 +45,7 @@
     .metric-mini .v.red{color:var(--red);}
     .metric-mini .v.green{color:var(--green);}
     .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+    .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
     .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;}
     .card .k{font-size:10px;color:var(--muted);letter-spacing:0.08em;margin-bottom:6px;text-transform:uppercase;}
     .card .v{font-family:var(--mono);font-weight:800;font-size:26px;line-height:1;}
@@ -122,9 +123,10 @@
     </div>
   </div>
 
-  <div class="grid2">
-    <div class="card"><div class="k">Kecepatan</div><div class="v" id="speedVal">0<span class="u">km/h</span></div></div>
-    <div class="card"><div class="k">Jarak Trip</div><div class="v" id="distVal">0.00<span class="u">km</span></div></div>
+  <div class="grid3">
+    <div class="card"><div class="k">Kecepatan</div><div class="v" id="speedVal" style="font-size:20px;">0<span class="u">km/h</span></div></div>
+    <div class="card"><div class="k">Waktu Trip</div><div class="v" id="timeVal" style="font-size:20px;">00:00:00</div></div>
+    <div class="card"><div class="k">Jarak Trip</div><div class="v" id="distVal" style="font-size:20px;">0.00<span class="u">km</span></div></div>
   </div>
 
   <div class="eff-card">
@@ -166,7 +168,7 @@
 <script>
   let latest = { voltage:null, current:null, power:null, soc:null, remainingAh:null, fullCapacityAh:null, temp1:null, temp2:null };
   let gpsWatchId=null, lastPos=null, lastFixTime=null;
-  let trip = { distanceKm:0, energyWh:0, samples:[], lastPowerSampleTime:null };
+  let trip = { distanceKm:0, energyWh:0, samples:[], lastPowerSampleTime:null, durationMs:0 };
   let isTripRunning = false;
   let tripStartData = null;
 
@@ -182,6 +184,18 @@
     const now = new Date();
     document.getElementById('clockTime').textContent = now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
     document.getElementById('clockDate').textContent = now.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+
+    if(isTripRunning && tripStartData){
+      const diff = now - tripStartData.time;
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('timeVal').textContent =
+        String(h).padStart(2, '0') + ':' +
+        String(m).padStart(2, '0') + ':' +
+        String(s).padStart(2, '0');
+      trip.durationMs = diff;
+    }
   }
   updateClock();
   setInterval(updateClock, 1000);
@@ -290,7 +304,7 @@
     if(!navigator.geolocation){ toast('Browser tidak support GPS.'); return; }
 
     // Reset trip data
-    trip = { distanceKm:0, energyWh:0, samples:[], lastPowerSampleTime:Date.now(), tempSum:0, tempCount:0, maxTemp:0 };
+    trip = { distanceKm:0, energyWh:0, samples:[], lastPowerSampleTime:Date.now(), tempSum:0, tempCount:0, maxTemp:0, durationMs:0 };
     lastPos=null;
 
     // Record start state
@@ -312,6 +326,7 @@
 
     updateEfficiencyUi();
     document.getElementById('distVal').innerHTML='0.00<span class="u">km</span>';
+    document.getElementById('timeVal').textContent='00:00:00';
     toast('Trip dimulai.');
   }
 
@@ -339,6 +354,7 @@
     const record = {
       date: new Date().toLocaleString('id-ID'),
       distance: trip.distanceKm,
+      duration: trip.durationMs,
       socUsed: (startSoc !== null && endSoc !== null) ? (startSoc - endSoc) : 0,
       ahUsed: (startAh !== null && endAh !== null) ? (startAh - endAh) : 0,
       eff: trip.distanceKm > 0.1 ? (trip.energyWh / trip.distanceKm) : 0,
@@ -367,6 +383,15 @@
   function renderHistory(){
     const history = JSON.parse(localStorage.getItem('trip_history') || '[]');
     const list = document.getElementById('historyList');
+
+    const fmtDur = (ms) => {
+      if(!ms) return '0m';
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      return (h > 0 ? h + 'j ' : '') + m + 'm ' + s + 's';
+    };
+
     if(history.length === 0){
       list.innerHTML = '<div style="text-align:center;color:var(--muted-2);margin-top:40px;">Belum ada rekaman trip.</div>';
       return;
@@ -376,6 +401,7 @@
         <div class="date">${h.date}</div>
         <div class="history-grid">
           <div><div class="history-val">${h.distance.toFixed(2)}<span class="u">km</span></div><div class="history-lbl">JARAK</div></div>
+          <div><div class="history-val">${fmtDur(h.duration)}</div><div class="history-lbl">DURASI</div></div>
           <div><div class="history-val">${h.eff.toFixed(1)}<span class="u">Wh/km</span></div><div class="history-lbl">EFISIENSI</div></div>
           <div><div class="history-val">${h.socUsed.toFixed(0)}%</div><div class="history-lbl">BATTERAI (%)</div></div>
           <div><div class="history-val">${Math.abs(h.ahUsed).toFixed(2)}<span class="u">Ah</span></div><div class="history-lbl">BATTERAI (Ah)</div></div>
@@ -458,9 +484,17 @@
     const history = JSON.parse(localStorage.getItem('trip_history') || '[]');
     if(history.length===0){ toast('Belum ada data trip untuk diexport.'); return; }
 
-    let csv='Tanggal,Jarak_km,Efisiensi_Whkm,Baterai_Persen,Baterai_Ah,Suhu_Avg,Suhu_Max\n';
+    const fmtDur = (ms) => {
+      if(!ms) return '0:00';
+      const h = Math.floor(ms / 3600000);
+      const m = Math.floor((ms % 3600000) / 60000);
+      const s = Math.floor((ms % 60000) / 1000);
+      return (h > 0 ? h + ':' : '') + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    };
+
+    let csv='Tanggal,Jarak_km,Durasi,Efisiensi_Whkm,Baterai_Persen,Baterai_Ah,Suhu_Avg,Suhu_Max\n';
     history.forEach(h=>{
-      csv += `${h.date},${h.distance.toFixed(2)},${h.eff.toFixed(1)},${h.socUsed.toFixed(0)},${Math.abs(h.ahUsed).toFixed(2)},${(h.avgTemp||0).toFixed(1)},${(h.maxTemp||0).toFixed(1)}\n`;
+      csv += `${h.date},${h.distance.toFixed(2)},${fmtDur(h.duration)},${h.eff.toFixed(1)},${h.socUsed.toFixed(0)},${Math.abs(h.ahUsed).toFixed(2)},${(h.avgTemp||0).toFixed(1)},${(h.maxTemp||0).toFixed(1)}\n`;
     });
 
     const filename = 'log_trip_'+new Date().toISOString().slice(0,10)+'.csv';

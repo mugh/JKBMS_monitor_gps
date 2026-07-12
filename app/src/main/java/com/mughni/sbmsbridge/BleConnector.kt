@@ -56,7 +56,8 @@ class BleConnector(
 
     @SuppressLint("MissingPermission")
     fun connect() {
-        val adapter = BluetoothAdapter.getDefaultAdapter()
+        val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager
+        val adapter = bluetoothManager?.adapter
         if (adapter == null) {
             Log.e(TAG, "No Bluetooth adapter on this device")
             return
@@ -106,16 +107,29 @@ class BleConnector(
             g.setCharacteristicNotification(char, true)
             val cccd = char.getDescriptor(CCCD_UUID)
             if (cccd != null) {
-                cccd.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-                g.writeDescriptor(cccd)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    g.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)
+                } else {
+                    @Suppress("DEPRECATION")
+                    cccd.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                    @Suppress("DEPRECATION")
+                    g.writeDescriptor(cccd)
+                }
             }
             // Deliberately NOT sending any activation/login command here — that's the
             // whole point. We rely on the official app having already unlocked the device.
             Log.i(TAG, "Subscribed to ffe1 notifications, waiting for frames...")
         }
 
+        override fun onCharacteristicChanged(g: BluetoothGatt, characteristic: BluetoothGattCharacteristic, value: ByteArray) {
+            handleFrame(value)
+        }
+
+        @Deprecated("Deprecated in Java")
         override fun onCharacteristicChanged(g: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
-            val bytes = characteristic.value ?: return
+            @Suppress("DEPRECATION")
+            val bytes = characteristic.value
+            if (bytes == null || bytes.isEmpty()) return
             handleFrame(bytes)
         }
     }
