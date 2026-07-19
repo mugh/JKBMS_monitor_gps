@@ -3,110 +3,145 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg"
     android:orientation="vertical"
-    android:background="#0A0D0E"
     android:padding="20dp">
 
-    <RelativeLayout
+    <!-- Header -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settings"
-            android:textColor="#E7EDEE"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_centerVertical="true" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/btnClose"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:contentDescription="@string/close"
-            app:tint="#7C8B8F" />
-    </RelativeLayout>
+            android:src="@drawable/ic_settings"
+            android:rotation="45"
+            app:tint="@color/muted"
+            android:contentDescription="@string/close" />
 
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:fontFamily="monospace"
+            android:text="@string/settings"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.1" />
+    </LinearLayout>
+
+    <!-- Scrollable Content -->
     <ScrollView
+        android:id="@+id/scrollSettings"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
 
+            <!-- MAC Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bms_mac_address"
-                android:textColor="#7C8B8F"
-                android:textSize="12sp"
-                android:letterSpacing="0.05" />
+                android:textColor="@color/muted"
+                android:textSize="10sp"
+                android:letterSpacing="0.1"
+                android:textAllCaps="true" />
 
-            <EditText
-                android:id="@+id/macInput"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="A4:C1:38:05:02:5C"
-                android:textColor="#E7EDEE"
-                android:textColorHint="#4E5A5D"
-                android:textSize="16sp"
-                android:singleLine="true"
-                android:inputType="textCapCharacters"
-                android:backgroundTint="#232C2F"
-                android:layout_marginTop="4dp"
-                android:paddingVertical="12dp" />
+                android:layout_marginTop="8dp"
+                app:boxStrokeColor="@color/cyan"
+                app:boxStrokeWidth="1dp"
+                app:hintEnabled="false">
 
-            <CheckBox
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/macInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:hint="AA:BB:CC:DD:EE:FF"
+                    android:inputType="textCapCharacters"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/muted_2"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Screen Toggle -->
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/cbAlwaysOn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="@string/screen_always_on"
-                android:textColor="#E7EDEE"
-                android:textSize="15sp"
-                android:layout_marginTop="20dp"
-                android:buttonTint="#2FE6C9"
-                android:paddingVertical="8dp" />
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:thumbTint="@color/cyan"
+                app:trackTint="@color/cyan_glow" />
 
+            <!-- Raw Data Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/last_raw_frame"
-                android:textColor="#7C8B8F"
-                android:textSize="12sp"
-                android:layout_marginTop="24dp"
-                android:letterSpacing="0.05" />
+                android:textColor="@color/muted"
+                android:textSize="10sp"
+                android:layout_marginTop="32dp"
+                android:letterSpacing="0.1"
+                android:textAllCaps="true" />
 
-            <TextView
-                android:id="@+id/tvRawData"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#12171A"
-                android:padding="12dp"
-                android:text="@string/no_data_yet"
-                android:textColor="#7BD88F"
-                android:fontFamily="monospace"
-                android:textSize="11sp"
-                android:layout_marginTop="8dp"
-                android:minLines="5" />
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/panel"
+                app:cardCornerRadius="8dp"
+                app:strokeWidth="0dp">
+
+                <TextView
+                    android:id="@+id/tvRawData"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="@string/no_data_yet"
+                    android:textColor="@color/green"
+                    android:fontFamily="monospace"
+                    android:textSize="10sp"
+                    android:minLines="6"
+                    android:lineSpacingExtra="4dp" />
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
     </ScrollView>
 
-    <Button
+    <!-- Pinned Bottom Button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_marginTop="8dp"
         android:text="@string/save_connect"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#2FE6C9"
-        android:textColor="#0A0D0E"
-        android:textStyle="bold" />
+        android:textColor="@color/bg"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/cyan"
+        app:cornerRadius="8dp" />
 
 </LinearLayout>

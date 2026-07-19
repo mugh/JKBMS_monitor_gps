@@ -1,12 +1,294 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A0D0E">
+    android:background="@color/bg"
+    android:padding="16dp">
 
-    <WebView
-        android:id="@+id/webView"
+    <!-- Header: Clock and Settings -->
+    <LinearLayout
+        android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvClockTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="00:00:00"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvClockDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MONDAY, 1 JAN"
+                android:textColor="@color/muted"
+                android:textSize="9sp"
+                android:textAllCaps="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:gravity="end"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvBleStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BLE: OFF"
+                android:textColor="@color/muted"
+                android:textSize="9sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvGpsStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPS: OFF"
+                android:textColor="@color/muted"
+                android:textSize="9sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_settings"
+            app:tint="@color/muted"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <!-- Dashboard: Speed and SOC Side by Side -->
+    <LinearLayout
+        android:id="@+id/layoutDashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/layoutHeader">
+
+        <!-- Speed Section -->
+        <FrameLayout
+            android:id="@+id/layoutSpeed"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_weight="1">
+
+            <ProgressBar
+                android:id="@+id/pbSpeed"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/speed_gauge_progress"
+                android:background="@drawable/speed_gauge_bg" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="44sp"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="KM/H"
+                    android:textColor="@color/text_dim"
+                    android:textSize="9sp"
+                    android:letterSpacing="0.1" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="match_parent" />
+
+        <!-- SOC Section -->
+        <FrameLayout
+            android:id="@+id/layoutSoc"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_weight="1">
+
+            <ProgressBar
+                android:id="@+id/pbSocCircle"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/speed_gauge_progress"
+                android:background="@drawable/speed_gauge_bg" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvSocValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:text="0%"
+                    android:textColor="@color/green"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:includeFontPadding="false" />
+                <TextView
+                    android:id="@+id/tvToFull"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--:-- TO FULL"
+                    android:textColor="@color/green"
+                    android:textSize="8sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BATTERY"
+                    android:textColor="@color/text_dim"
+                    android:textSize="9sp"
+                    android:letterSpacing="0.1" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Remaining Range: Highlighted in Middle -->
+    <LinearLayout
+        android:id="@+id/layoutRangeCenter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/layoutDashboard">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EST. REMAINING RANGE"
+            android:textColor="@color/muted"
+            android:textSize="10sp"
+            android:letterSpacing="0.1" />
+
+        <TextView
+            android:id="@+id/tvRangeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="0"
+            android:textColor="@color/cyan"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KM"
+            android:textColor="@color/muted"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Metrics Grid -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/layoutButtons"
+        app:layout_constraintTop_toBottomOf="@+id/layoutRangeCenter">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:alignmentMode="alignMargins">
+
+            <include android:id="@+id/metricVoltage" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricCurrent" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricPower" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricCapacity" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricTemp1" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricTemp2" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricEfficiency" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricOdometer" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricTripTime" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+            <include android:id="@+id/metricEnergy" layout="@layout/view_metric_futuristic" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" />
+        </GridLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Buttons -->
+    <LinearLayout
+        android:id="@+id/layoutButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTrip"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="12dp"
+            android:text="START TRIP"
+            android:textColor="@color/cyan"
+            app:strokeColor="@color/cyan"
+            app:cornerRadius="4dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnShowHistory"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LOG"
+            android:textColor="@color/white"
+            app:strokeColor="@color/muted"
+            app:cornerRadius="4dp" />
+    </LinearLayout>
+
+    <!-- Hidden View IDs for logic compatibility -->
+    <View android:id="@+id/dotBle" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+    <View android:id="@+id/dotGps" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+    <ProgressBar android:id="@+id/pbSoc" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+    <!-- metricTemp and metricRange ids are not in layout but used in code, adding hidden stubs if needed or updating code -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
