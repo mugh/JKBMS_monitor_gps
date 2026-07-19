@@ -1,6 +1,6 @@
-# JKBMS GPS Monitor (SBMS Bridge) For Ebike🔋🚀
+# JKBMS GPS Monitor For Ebike🔋🚀
 
-An Android application designed to monitor **JK BMS (Jikong Battery Management System)** data in real-time via Bluetooth Low Energy (BLE), integrated with GPS data to calculate energy efficiency (Wh/km) and estimated remaining range, for use in ebike battery setup.
+An Android application designed to monitor **JK BMS (Jikong Smart Battery Management System)** data in real-time via Bluetooth Low Energy (BLE), integrated with GPS data to calculate energy efficiency (Wh/km) and estimated remaining range, for use in ebike battery setup.
 
 ## Reason
 The JK BMS app has an ugly and boring interface. I wanted an app that was more intuitive and capable of tracking power consumption based on distance, which is why I created this app.
